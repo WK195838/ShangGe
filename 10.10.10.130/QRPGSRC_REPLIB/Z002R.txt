@@ -1,0 +1,80 @@
+     FZ002F   IP  E           K        DISK
+     FZ002WF  O   E                    DISK
+     FSOSCPF  IF  E           K        DISK
+     FSOSDPF  IF  E           K        DISK
+     FMTMAPF  IF  E           K        DISK
+     FMTMCPF  IF  E           K        DISK
+     FPA#PPF  IF  E           K        DISK
+     IWF0
+     I                                              WF05  L1
+     C*==============================================================*
+     C*                    KEY LIST
+     C*==============================================================*
+     C*==============================================================*
+     C*                    DEFINE
+     C*==============================================================*
+     C*==============================================================*
+     C*                    MAIN ROUTINE
+     C*==============================================================*
+     C   L1                EXSR R7100
+     C*==============================================================*
+     C*          R0100 ... INITIAL
+     C*==============================================================*
+     C*          R0100     BEGSR
+     C*                    ENDSR
+     C*==============================================================*
+     C*          R7100 ... LEVEL BREAK 1 --- INITIAL
+     C*==============================================================*
+     C           R7100     BEGSR
+     C*
+     C           WF05      CHAINSC0                  40
+     C           *IN40     IFEQ '0'
+     C                     Z-ADDSC39      XF01             確認日期
+     C                     MOVELSC02      XF02      P      訂單號碼
+     C                     Z-ADDSC07      XF10             訂單日期
+     C           SC27      CHAINMC0                  40
+     C           *IN40     IFEQ '0'
+     C                     MOVELMC02      XF11      P      業務名稱
+     C                     ELSE
+     C                     MOVEL*BLANK    XF11      P      業務名稱
+     C                     END
+     C           SC10      CHAIN#P0                  40
+     C           *IN40     IFEQ '0'
+     C                     MOVEL#P02      XF12      P      促銷號碼
+     C                     ELSE
+     C                     MOVEL*BLANK    XF12      P      促銷號碼
+     C                     END
+     C*
+     C           WF05      SETLLSD0
+     C           WF05      READESD0                      46
+     C           *IN46     DOWEQ'0'
+     C                     MOVELSD03      XF03             產品代號
+     C           SD03      CHAINMA0                  40
+     C           *IN40     IFEQ '0'
+     C                     MOVELMA03      XF04      P      產品簡稱
+     C                     ELSE
+     C                     MOVEL*BLANK    XF04      P      產品簡稱
+     C                     ENDIF
+     C           SD04      ADD  SD05      XF05             數量
+     C           XF05      MULT SD22      XF06      H      FOB
+     C           XF05      MULT SD23      XF07      H      FHI
+     C           XF05      MULT SD24      XF08      H      DUTY
+     C           XF06      ADD  XF07      XF09             TOTAL
+     C                     ADD  XF08      XF09             TOTAL
+     C                     WRITEXF0
+     C           WF05      READESD0                      46
+     C                     ENDDO
+     C                     END
+     C*
+     C                     ENDSR
+     C*==============================================================*
+     C*          R2000 ... READE DETAIL
+     C*==============================================================*
+     C*          R2000     BEGSR
+     C*                    ENDSR
+     C*==============================================================*
+     C*          R8100 ... LEVEL BREAK 1 --- WRITE ZZIYPF
+     C*==============================================================*
+     C*          R8100     BEGSR
+     C*                    ENDSR
+

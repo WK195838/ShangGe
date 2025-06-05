@@ -1,0 +1,86 @@
+
+     /*   泛太資訊科技開發股份有限公司－版權所有    TEL:7313250   */
+     /*                                                             */
+     /*    AUTHOR       : A1084  CHARLES                            */
+     /*    CREATE DATE  : 81/05/04                                  */
+     /*    UPDATE DATE  :                                           */
+     /*    PROGRAM NAME : SAR061C1                                  */
+     /*    SYSTEM       :人頭馬匯東                               */
+     /*    SUBSYSTEM    :銷售分析系統                             */
+     /*    REMARK       :產品標準箱數彙總表                       */
+     /***************************************************************/
+             PGM
+             DCL        VAR(&$EVR)   TYPE(*CHAR) LEN(1)
+             DCL        VAR(&$CPY)   TYPE(*CHAR) LEN(3)
+             DCL        VAR(&$PRTID) TYPE(*CHAR) LEN(2)
+             DCL        VAR(&P6601I) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&P6602I) TYPE(*DEC)  LEN(1 0)
+             DCL        VAR(&P6603I) TYPE(*DEC)  LEN(3 0)
+             DCL        VAR(&P6604I) TYPE(*DEC)  LEN(2 0)
+
+             DCL        VAR(&COMP) TYPE(*CHAR) LEN(2)
+             DCL        VAR(&YMDS) TYPE(*CHAR) LEN(6)
+             DCL        VAR(&YMDE) TYPE(*CHAR) LEN(6)
+/*M001A*/    DCL        VAR(&YMD8S)  TYPE(*CHAR) LEN(8)
+/*M001A*/    DCL        VAR(&YMD8E)  TYPE(*CHAR) LEN(8)
+
+/*M001A*/    CHGVAR     VAR(&YMD8S)  VALUE(%SST(*LDA 850 8))
+/*M001A*/    CHGVAR     VAR(&YMD8E)  VALUE(%SST(*LDA 858 8))
+             CHGVAR     VAR(&COMP)   VALUE(%SST(*LDA 866 2))
+
+             CPYF       FROMFILE(REWF45) TOFILE(QTEMP/REWF45) +
+                          CRTFILE(*YES)
+             MONMSG     MSGID(CPF2817) EXEC(CLRPFM FILE(QTEMP/REWF45))
+             OVRDBF     FILE(REWF45) TOFILE(QTEMP/REWF45) SHARE(*YES)
+
+             OVRPRTF    FILE(SAR061P) PAGESIZE(*N 198) CPI(15) +
+                        USRDTA('產標準箱')
+
+             CHGVAR     VAR(&YMDS) VALUE(%SST(*LDA 619 6))
+             CHGVAR     VAR(&YMDE) VALUE(%SST(*LDA 625 6))
+
+             OVRDBF     FILE(SOSCPF) SHARE(*YES)
+             OVRDBF     FILE(SOSGPF) SHARE(*YES)
+             OVRDBF     FILE(SOSNPF) SHARE(*YES)
+
+             OPNQRYF    FILE((SOSCPF)) QRYSLT(' SC01 *EQ "' *CAT +
+                          &COMP *CAT '" & MSC39 *EQ %RANGE("' *CAT +
+                          &YMD8S *CAT '" "' *CAT &YMD8E *CAT '") & +
+                          SC13 *NE "*" & SC35 *NE "T"  &  SC29 *NE +
+                          " " ') KEYFLD(*FILE) MAPFLD((MSC39 SC39 +
+                          *CHAR 8))
+
+             OPNQRYF    FILE((SOSGPF)) QRYSLT(' SG01 *EQ "' *CAT +
+                          &COMP *CAT '" & MSG26 *EQ %RANGE("' *CAT +
+                          &YMD8S *CAT '" "' *CAT &YMD8E *CAT '") & +
+                          SG17 *EQ "            "  ') KEYFLD(*FILE) +
+                          MAPFLD((MSG26 SG26 *CHAR 8))
+
+             OPNQRYF    FILE((SOSNPF)) QRYSLT(' SN01 *EQ "' *CAT +
+                          &COMP *CAT '" & MSN06 *EQ %RANGE("' *CAT +
+                          &YMD8S *CAT '" "' *CAT &YMD8E *CAT '") & +
+                          SN10 *NE "T" & SN02L *EQ "R3" ') +
+                          KEYFLD(*FILE) MAPFLD((MSN06 SN06 *CHAR 8) +
+                          (SN02L '%SST(sn02 3 2)' *CHAR 2))
+
+             CALL       SAR0611
+             CALL       SAR0612
+
+             CLOF       OPNID(SOSCPF)
+             CLOF       OPNID(SOSGPF)
+             CLOF       OPNID(SOSNPF)
+             DLTOVR     FILE(*ALL)
+
+
+             RTVDTAARA  DTAARA(*LDA (162 1)) RTNVAR(&$EVR)
+             RTVDTAARA  DTAARA(*LDA (125 3)) RTNVAR(&$CPY)
+             RTVDTAARA  DTAARA(*LDA (598 2)) RTNVAR(&$PRTID)
+             CHGVAR     VAR(&P6601I) VALUE('SAR061P')
+             CHGVAR     VAR(&P6602I) VALUE(&$EVR)
+             CHGVAR     VAR(&P6603I) VALUE(&$CPY)
+             CHGVAR     VAR(&P6604I) VALUE(&$PRTID)
+             CALL       PGM(P66) PARM(&P6601I &P6602I &P6603I &P6604I)
+
+
+             ENDPGM
+

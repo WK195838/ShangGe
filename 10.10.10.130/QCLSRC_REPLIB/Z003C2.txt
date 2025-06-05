@@ -1,0 +1,18 @@
+             PGM        PARM(&SDATE &EDATE)
+
+             DCL        VAR(&SDATE) TYPE(*CHAR) LEN(6)
+             DCL        VAR(&EDATE) TYPE(*CHAR) LEN(6)
+
+             CLRPFM     FILE(A100D)
+
+             OVRDBF     FILE(IMIXPF) SHARE(*YES)
+             OPNQRYF    FILE((IMIXPF)) QRYSLT('CIX11 *EQ %RANGE("' +
+                          *CAT &SDATE *CAT '" "' *CAT &EDATE *CAT +
+                          '")') KEYFLD((IX11) (IX01)) +
+                          MAPFLD((CIX11 IX11 *CHAR 6))
+             CALL       PGM(Z003R2)
+             CLOF       OPNID(IMIXPF)
+             DLTOVR     FILE(IMIXPF)
+
+             ENDPGM
+

@@ -1,0 +1,9 @@
+     A          R A1R
+     A            A001           6S 0       COLHDG('年月')
+     A            A002           9A         COLHDG('產品代號')
+     A            A003           2A         COLHDG('異動別')
+     A            A003A          1S 0       COLHDG('加減別')
+     A            A004           9S 0       COLHDG('數量')
+     A          K A001
+     A          K A002
+

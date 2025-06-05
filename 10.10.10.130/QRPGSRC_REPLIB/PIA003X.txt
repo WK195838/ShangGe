@@ -1,0 +1,80 @@
+      ****************************************************************
+      *   泛太資訊科技開發股份有限公司－版權所有    TEL:7313250    *
+      *                                                              *
+      * PROGRAM NAME : PIA003                                        *
+      * AUTHER       : A1087  JOYCE                                  *
+      * CREATE DATE  : 81/04/24                                      *
+      * UPDATE DATE  : 12/08/92                                      *
+      * SYSTEM       :人頭馬匯東                                   *
+      * SUBSYSTEM    :盤點系統                                     *
+      * REMARK       :盤點結果更新                                 *
+     A*===============================================================
+     A* MODI CODE |   DATE   | DESCRIPTION
+     A*---------------------------------------------------------------
+     A* M001      | 98.11.16 | MANUAL MODIFY BY MICHELLE FOR Y2K
+     A*---------------------------------------------------------------
+      ****************************************************************
+     FIMIUPF  IP  E                    DISK
+     FIMIALF03UF  E           K        DISK
+     FMTMAPF  UF  E           K        DISK
+     I*
+     I           UDS
+     I                                      101 110 $USER
+M001AI                                      201 2080DATE
+      *==============================================================*
+      *                    DEFINE ROUTINE
+      *==============================================================*
+     C           *LIKE     DEFN IA06      WIA06
+      *==============================================================*
+      *                    KLIST
+      *==============================================================*
+     C           KEYIA     KLIST
+     C                     KFLD           IU03
+     C                     KFLD           IU01
+     C                     KFLD           IU05
+      *==============================================================*
+      *                    MAIN ROUTINE
+      *==============================================================*
+|    C**UPDAT MTMAPF
+|    C           IU05      CHAINMA0                  40
+| 05-C           *IN40     IFEQ '0'
+|   C                     SUB  IU08      MA26
+|   C                     SUB  IU09      MA27
+|   C                     SUB  IU10      MA28
+|   C                     Z-ADD0         WQTY    70
+|    *
+|   C                     SUB  IU06      MA30
+|   C                     SUB  IU07      MA30
+|    *
+|   C           MA29      ADD  MA30      WQTY
+| 07-C           WQTY      IFNE 0
+|   C           MA26      DIV  WQTY      FOB    174H
+|   C*MARK單位成本不UPDATE  Z-ADDFOB       MA31      H
+|   C           MA27      DIV  WQTY      FHI    174H
+|   C*MARK單位成本不UPDATE  Z-ADDFHI       MA32      H
+| 08-C           MA30      IFNE 0
+|   C           MA28      DIV  MA30      DUTY   174H
+|   C*MARK單位成本不UPDATE  Z-ADDDUTY      MA33      H
+| 08-C                     END
+| 07-C                     END
+|   C           MA31      ADD  MA32      MA34
+|   C                     ADD  MA33      MA34
+|    *
+|   C                     UPDATMA0
+     C                     END
+|    C*
+|    C           KEYIA     CHAINIA0                  40
+|    C*
+|    C                     Z-ADDDATE      IAXX
+|    C                     TIME           IAYY
+|    C                     MOVE $USER     IAZZ
+| 01-C           *IN40     IFEQ '0'
+|   C           IU06      ADD  IU07      WIA06
+|   C                     SUB  WIA06     IA06
+|   C                     SUB  IU06      IA07
+|   C                     SUB  IU07      IA08
+|   C                     SUB  IU06      IA10
+|   C*
+|   C                     UPDATIA0
+| 01-C                     END
+

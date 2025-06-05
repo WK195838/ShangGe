@@ -1,0 +1,11 @@
+     I              'LGR316000024'        C         N01
+     I              'LGS416000268'        C         N02
+     I              'SDM00005F'           C         N03
+     C                     CALL 'SOS001'
+     C                     PARM N01       PS001I 12        單據號碼
+     C                     PARM N02       PS002I 12        原試飲單號
+     C                     PARM N03       PS003I  9        產品代號
+     C                     PARM           PS001O  50       可收回數量
+     C*
+     C                     SETON                     LR
+

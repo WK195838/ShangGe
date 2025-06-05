@@ -1,0 +1,11 @@
+     A          R WF0
+     A            WF01           2A         COLHDG('公司')
+     A            WF02          16O         COLHDG('申請日期')
+     A            WF03           1A         COLHDG('區域')
+     A            WF04          10O         COLHDG('申請人')
+     A            WF05          12A         COLHDG('試飲單號')
+     A            WF06          62O         COLHDG('使用原因')
+     A            WF07          32O         COLHDG('產品名稱')
+     A            WF08           9S 0       COLHDG('數量')
+     A            WF09          32O         COLHDG('活動案文')
+

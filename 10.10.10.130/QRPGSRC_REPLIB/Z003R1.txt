@@ -1,0 +1,75 @@
+     FIMIXPF  IP  E           K        DISK
+     FA200A   IF  E           K        DISK
+     FA200B   O   E                    DISK
+     I            DS
+     I                                        1   60KA001
+     I                                        1   40KA001Y
+     I                                        5   60KA001M
+     C*==============================================================*
+     C*                    KEY LIST
+     C*==============================================================*
+     C           KEY200    KLIST
+     C                     KFLD           KA001            年月
+     C                     KFLD           IX01             產品代號
+     C*==============================================================*
+     C*                    DEFINE
+     C*==============================================================*
+     C           *LIKE     DEFN A004      WA004            FOB-TOTAL
+     C           *LIKE     DEFN A005      WA005            FHI-TOTAL
+     C           *LIKE     DEFN A006      WA006            DUTY-TOTAL
+     C*==============================================================*
+     C*                    MAIN ROUTINE
+     C*==============================================================*
+     C                     EXSR R2000
+     C*==============================================================*
+     C*          R0100 ... INITIAL
+     C*==============================================================*
+     C*          R0100     BEGSR
+     C*                    ENDSR
+     C*==============================================================*
+     C*          R7100 ... LEVEL BREAK 1 --- INITIAL
+     C*==============================================================*
+     C*          R7100     BEGSR
+     C*                    ENDSR
+     C*==============================================================*
+     C*          R2000 ... READE DETAIL
+     C*==============================================================*
+     C           R2000     BEGSR
+     C*
+     C                     Z-ADDIX11      KA001            年月
+     C                     ADD  1         KA001M
+     C           KA001M    IFGT 12
+     C                     ADD  1         KA001Y
+     C                     Z-ADD1         KA001M
+     C                     ENDIF
+     C*
+     C                     Z-ADD0         WA004            FOB-TOTAL
+     C                     Z-ADD0         WA005            FHI-TOTAL
+     C                     Z-ADD0         WA006            DUTY-TOTAL
+     C*
+     C           KEY200    SETLLA2R
+     C           KEY200    READEA2R                      46
+     C           *IN46     DOWEQ'0'
+     C                     ADD  A004      WA004            FOB-TOTAL
+     C                     ADD  A005      WA005            FHI-TOTAL
+     C                     ADD  A006      WA006            DUTY-TOTAL
+     C           KEY200    READEA2R                      46
+     C                     ENDDO
+     C*
+     C                     MOVELIX01      A2001            產品代號
+     C                     ADD  IX08      WA004            FOB-TOTAL
+     C                     ADD  IX09      WA005            FHI-TOTAL
+     C                     ADD  IX10      WA006            DUTY-TOTAL
+     C                     Z-ADDWA004     A2002            FOB-TOTAL
+     C                     Z-ADDWA005     A2003            FHI-TOTAL
+     C                     Z-ADDWA006     A2004            DUTY-TOTAL
+     C                     Z-ADDKA001     A2005            年終年月
+     C                     WRITEA200R
+     C*
+     C                     ENDSR
+     C*==============================================================*
+     C*          R8100 ... LEVEL BREAK 1 --- WRITE ZZIYPF
+     C*==============================================================*
+     C*          R8100     BEGSR
+     C*                    ENDSR
+

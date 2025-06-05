@@ -1,0 +1,17 @@
+     A          R XF0
+     A*
+     A            XF01           8S 0       COLHDG('確認日期')
+     A            XF02          12A         COLHDG('訂單號碼')
+     A            XF03           9A         COLHDG('產品代號')
+     A            XF04          18O         COLHDG('產品簡稱')
+     A            XF05           5  0       COLHDG('數量')
+     A            XF06           9  2       COLHDG('FOB')
+     A            XF07           9  2       COLHDG('FHI')
+     A            XF08           9  2       COLHDG('DUTY')
+     A            XF09          13  2       COLHDG('TOTAL')
+     A            XF10           8S 0       COLHDG('訂單日期')
+     A            XF11          12O         COLHDG('業務名稱')
+     A            XF12           6A         COLHDG('促銷號碼')
+     A*
+     A          K XF01
+

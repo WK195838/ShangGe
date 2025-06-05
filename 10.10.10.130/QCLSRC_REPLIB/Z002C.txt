@@ -1,0 +1,11 @@
+             PGM
+
+             CLRPFM     FILE(Z002WF)
+             OVRDBF     FILE(Z002F) SHARE(*YES)
+             OPNQRYF    FILE((Z002F)) QRYSLT(*ALL) KEYFLD((WF05))
+             CALL       PGM(Z002R)
+             CLOF       OPNID(Z002F)
+             DLTOVR     FILE(Z002F)
+
+             ENDPGM
+

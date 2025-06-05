@@ -1,0 +1,23 @@
+     A*****************************************************************
+     A*          年終成本檔(ZZIXPF)      KEY=ZX11+ZX01
+     A*****************************************************************
+     A                                      REF(RERF)
+     A                                      UNIQUE
+     A          R ZX0
+     A            ZX01      R               COLHDG('產品代號')
+     A            ZX02      R               COLHDG('FOB-UNIT')
+     A            ZX03      R               COLHDG('FHI-UNIT')
+     A            ZX04      R               COLHDG('DUTY-UNIT')
+     A            ZX05      R               COLHDG('單位成本')
+     A            ZX06      R               COLHDG('保稅庫存量')
+     A            ZX07      R               COLHDG('完稅庫存量')
+     A            ZX08      R               COLHDG('FOB-TOTAL')
+     A            ZX09      R               COLHDG('FHI-TOTAL')
+     A            ZX10      R               COLHDG('DUTY-TOTAL')
+B2CHKA            ZX11      R    6 00       COLHDG('年終年月')
+B2CHKA            ZXXX      R    8 00       COLHDG('異動日期')
+     A            ZXYY      R               COLHDG('異動時間')
+     A            ZXZZ      R               COLHDG('異動者　')
+     A          K ZX11
+     A          K ZX01
+
